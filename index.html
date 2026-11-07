@@ -1,286 +1,66 @@
 <!doctype html>
 <html lang="zh-HK">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#fff3f6" />
-    <title>心語密碼</title>
-    <style>
-      :root {
-        --bg1: #fff3f6;
-        --bg2: #ffe7ef;
-        --card: rgba(255,255,255,.92);
-        --pink: #e86f99;
-        --pink-deep: #d24a7a;
-        --text: #3d2b36;
-        --muted: #7e6873;
-        --line: #f0dfe6;
-        --success: #1b805f;
-        --danger: #bb4d67;
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 12px;
-        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        background: radial-gradient(circle at top, var(--bg2), var(--bg1) 40%, #fff 100%); color: var(--text);
-      }
-      .shell { width: min(92vw, 620px); }
-      .card { background: var(--card); border: 1px solid var(--line); border-radius: 30px; box-shadow: 0 25px 60px rgba(183,100,128,.12); padding: 28px 24px 24px; backdrop-filter: blur(8px); }
-      .eyebrow { letter-spacing: .13em; text-transform: uppercase; color: var(--pink-deep); font-size: .72rem; font-weight: 800; }
-      h1 { margin: 10px 0 8px; font-size: clamp(2rem,5vw,2.8rem); line-height: 1.1; }
-      h2 { margin: 0 0 10px; font-size: 1.2rem; }
-      .subtitle { margin: 0 0 22px; color: var(--muted); }
-      .field { margin: 15px 0; }
-      label { display: block; margin-bottom: 7px; font-weight: 750; }
-      input, textarea { width: 100%; border-radius: 14px; border: 1px solid #ead5dd; background: white; padding: 13px 15px; font: inherit; color: var(--text); outline: none; }
-      textarea { min-height: 160px; resize: vertical; line-height: 1.6; }
-      input:focus, textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 4px rgba(232,111,153,.15); }
-      .password-box { display: flex; gap: 10px; }
-      .password-box input { flex: 1; min-width: 0; }
-      button { border: 0; border-radius: 14px; padding: 13px 18px; font: inherit; font-weight: 800; cursor: pointer; transition: transform .15s, opacity .15s; }
-      button:hover { opacity: .96; }
-      button:active { transform: scale(.985); }
-      .primary { color: white; background: linear-gradient(135deg,var(--pink),var(--pink-deep)); }
-      .secondary { color: var(--pink-deep); background: #fff0f4; }
-      .hint { margin: 9px 0 0; font-size: .87rem; color: var(--muted); }
-      .notice { margin-top: 16px; padding: 12px 14px; border-radius: 14px; background: #fff6f8; color: var(--muted); font-size: .9rem; line-height: 1.5; }
-      .result { display: none; margin-top: 20px; border-radius: 20px; padding: 18px; }
-      .result.visible { display: block; }
-      .success { background: #f0fbf6; border: 1px solid #cfe9dd; color: var(--success); }
-      .failure { background: #fff1f4; border: 1px solid #f4d5dc; color: var(--danger); }
-      .message { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; margin: 0; }
-      .actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
-      .new-link { display: block; margin: 17px auto 0; padding: 6px; border: 0; background: none; color: var(--pink-deep); font-weight: 700; text-decoration: underline; }
-      .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(24px); background: rgba(35,30,34,.94); color: white; padding: 10px 18px; border-radius: 999px; font-size: .9rem; opacity: 0; pointer-events: none; transition: opacity .2s,transform .2s; }
-      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-      [hidden] { display: none !important; }
-      @media (max-width: 480px) { .password-box { flex-direction: column; } .password-box button { width: 100%; } }
-    </style>
-  </head>
-  <body>
-    <main class="shell">
-      <section class="card">
-        <div class="eyebrow">PRIVATE MEMO</div>
-        <h1>心語密碼</h1>
-        <p class="subtitle">寫下心意，自己設定密碼，再分享專屬連結。</p>
-
-        <section id="createView">
-          <h2>建立加密訊息</h2>
-          <div class="field">
-            <label for="messageInput">想分享的內容</label>
-            <textarea id="messageInput" placeholder="在這裡寫下你的心意……">你可愛到我想把整個晚上都記在心上。
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff3f6">
+  <title>心語密碼</title>
+  <style>
+    :root{--bg1:#fff3f6;--bg2:#ffe7ef;--card:rgba(255,255,255,.92);--pink:#e86f99;--deep:#d24a7a;--text:#3d2b36;--muted:#7e6873;--line:#f0dfe6;--success:#1b805f;--danger:#bb4d67}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px 12px;font-family:"Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;background:radial-gradient(circle at top,var(--bg2),var(--bg1) 40%,#fff 100%);color:var(--text)}
+    .shell{width:min(92vw,620px)}.card{background:var(--card);border:1px solid var(--line);border-radius:30px;box-shadow:0 25px 60px rgba(183,100,128,.12);padding:28px 24px 24px;backdrop-filter:blur(8px)}
+    .eyebrow{letter-spacing:.13em;text-transform:uppercase;color:var(--deep);font-size:.72rem;font-weight:800}h1{margin:10px 0 8px;font-size:clamp(2rem,5vw,2.8rem);line-height:1.1}h2{margin:0 0 10px;font-size:1.2rem}.subtitle{margin:0 0 22px;color:var(--muted)}
+    .field{margin:15px 0}label{display:block;margin-bottom:7px;font-weight:750}input,textarea{width:100%;border-radius:14px;border:1px solid #ead5dd;background:#fff;padding:13px 15px;font:inherit;color:var(--text);outline:none}textarea{min-height:160px;resize:vertical;line-height:1.6}input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(232,111,153,.15)}
+    .password-box{display:flex;gap:10px}.password-box input{flex:1;min-width:0}button{border:0;border-radius:14px;padding:13px 18px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,opacity .15s}button:hover{opacity:.96}button:active{transform:scale(.985)}button:disabled{opacity:.65;cursor:wait}.primary{color:white;background:linear-gradient(135deg,var(--pink),var(--deep))}.secondary{color:var(--deep);background:#fff0f4}
+    .hint{margin:9px 0 0;font-size:.87rem;color:var(--muted)}.notice{margin-top:16px;padding:12px 14px;border-radius:14px;background:#fff6f8;color:var(--muted);font-size:.9rem;line-height:1.5}.result{display:none;margin-top:20px;border-radius:20px;padding:18px}.result.visible{display:block}.success{background:#f0fbf6;border:1px solid #cfe9dd;color:var(--success)}.failure{background:#fff1f4;border:1px solid #f4d5dc;color:var(--danger)}.message{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;margin:0}.actions{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}.new-link{display:block;margin:17px auto 0;padding:6px;border:0;background:none;color:var(--deep);font-weight:700;text-decoration:underline}.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(24px);background:rgba(35,30,34,.94);color:white;padding:10px 18px;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}[hidden]{display:none!important}@media(max-width:480px){.password-box{flex-direction:column}.password-box button{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="shell"><section class="card">
+    <div class="eyebrow">PRIVATE MEMO</div><h1>心語密碼</h1><p class="subtitle">寫下心意，自己設定密碼，再分享專屬連結。</p>
+    <section id="createView">
+      <h2>建立加密訊息</h2>
+      <div class="field"><label for="messageInput">想分享的內容</label><textarea id="messageInput" placeholder="在這裡寫下你的心意……">你可愛到我想把整個晚上都記在心上。
 
 我其實很喜歡你這種會讓我心跳加速、嘴角忍不住上揚的人。
 
 想約你去吃好吃的、走走逛逛，順便多靠近一點。
 
-你願意嗎？</textarea>
-          </div>
-          <div class="field">
-            <label for="createPassword">自行設定解鎖密碼</label>
-            <input id="createPassword" type="password" autocomplete="new-password" placeholder="設定你想要的密碼" />
-          </div>
-          <div class="field">
-            <label for="confirmPassword">再次輸入密碼</label>
-            <input id="confirmPassword" type="password" autocomplete="new-password" placeholder="再輸入一次確認" />
-            <p class="hint">密碼不會放進分享連結。請記住密碼，並用另一個渠道告訴對方。</p>
-          </div>
-          <button class="primary" id="createBtn" type="button">🔐 加密並建立分享連結</button>
-          <div id="createError" class="result failure" role="alert"></div>
-          <div id="linkResult" class="result success">
-            <h2>✅ 加密連結已建立</h2>
-            <p class="hint">複製連結傳給對方，再另外告訴對方密碼。</p>
-            <div class="field"><label for="shareLink">分享連結</label><textarea id="shareLink" readonly rows="3"></textarea></div>
-            <button class="secondary" id="copyLinkBtn" type="button">📋 複製連結</button>
-          </div>
-          <div class="notice">訊息會在你的瀏覽器以 AES-GCM 加密；密碼不會寫入網址或送到伺服器。請勿在無法信任的裝置輸入私人內容。</div>
-        </section>
-
-        <section id="unlockView" hidden>
-          <h2>🔒 這是一則加密訊息</h2>
-          <p class="subtitle">輸入寄件人另外告訴你的密碼來解鎖。</p>
-          <div class="password-box">
-            <input id="unlockPassword" type="password" autocomplete="current-password" placeholder="輸入解鎖密碼" aria-label="輸入解鎖密碼" />
-            <button class="primary" id="unlockBtn" type="button">解鎖</button>
-          </div>
-          <div id="unlockError" class="result failure" role="alert"></div>
-          <div id="decryptedResult" class="result success">
-            <h2>💌 給你的心意</h2>
-            <p id="decryptedMessage" class="message"></p>
-            <div class="actions"><button class="secondary" id="copyMessageBtn" type="button">複製訊息</button></div>
-          </div>
-        </section>
-      </section>
-      <button id="newMessageBtn" class="new-link" type="button" hidden>建立另一則加密訊息</button>
-    </main>
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-    <script>
-      // 加密格式只把密文放在網址片段 (#)，瀏覽器不會將片段傳送給網站伺服器。
-      // GitHub Pages 使用 HTTPS，可提供 Web Crypto API。
-      const ITERATIONS = 310000;
-      const encoder = new TextEncoder();
-      const decoder = new TextDecoder();
-      const $ = (id) => document.getElementById(id);
-      let encryptedPayload = null;
-
-      function showToast(message) {
-        const toast = $("toast");
-        toast.textContent = message;
-        toast.classList.add("show");
-        clearTimeout(showToast.timer);
-        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
-      }
-
-      function toBase64Url(bytes) {
-        let binary = "";
-        for (const byte of bytes) binary += String.fromCharCode(byte);
-        return btoa(binary).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
-      }
-
-      function fromBase64Url(value) {
-        const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
-        const binary = atob(base64 + "=".repeat((4 - base64.length % 4) % 4));
-        return Uint8Array.from(binary, (char) => char.charCodeAt(0));
-      }
-
-      async function deriveKey(password, salt) {
-        const material = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
-        return crypto.subtle.deriveKey(
-          { name: "PBKDF2", salt, iterations: ITERATIONS, hash: "SHA-256" },
-          material,
-          { name: "AES-GCM", length: 256 },
-          false,
-          ["encrypt", "decrypt"]
-        );
-      }
-
-      async function createShareLink() {
-        $("createError").classList.remove("visible");
-        $("linkResult").classList.remove("visible");
-        const message = $("messageInput").value;
-        const password = $("createPassword").value;
-        const confirm = $("confirmPassword").value;
-
-        if (!message.trim()) return showCreateError("請先輸入想分享的內容。");
-        if (!password) return showCreateError("請自行設定一個解鎖密碼。");
-        if (password !== confirm) return showCreateError("兩次輸入的密碼不一致，請再檢查一次。");
-        if (!window.crypto || !crypto.subtle) return showCreateError("此瀏覽器不支援安全加密，請使用 HTTPS 網址及較新的瀏覽器。");
-
-        const button = $("createBtn");
-        button.disabled = true;
-        button.textContent = "加密中…";
-        try {
-          const salt = crypto.getRandomValues(new Uint8Array(16));
-          const iv = crypto.getRandomValues(new Uint8Array(12));
-          const key = await deriveKey(password, salt);
-          const ciphertext = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(message)));
-          const payload = ["v1", ITERATIONS, toBase64Url(salt), toBase64Url(iv), toBase64Url(ciphertext)].join(".");
-          const url = new URL(window.location.href);
-          url.hash = payload;
-          $("shareLink").value = url.href;
-          $("linkResult").classList.add("visible");
-          $("linkResult").scrollIntoView({ behavior: "smooth", block: "nearest" });
-        } catch (error) {
-          console.error(error);
-          showCreateError("加密時發生問題，請重試。");
-        } finally {
-          button.disabled = false;
-          button.textContent = "🔐 加密並建立分享連結";
-        }
-      }
-
-      function showCreateError(message) {
-        const box = $("createError");
-        box.textContent = message;
-        box.classList.add("visible");
-      }
-
-      function readPayload() {
-        const raw = window.location.hash.slice(1);
-        if (!raw) return null;
-        const parts = raw.split(".");
-        if (parts.length !== 5 || parts[0] !== "v1" || Number(parts[1]) !== ITERATIONS) return null;
-        try {
-          return { salt: fromBase64Url(parts[2]), iv: fromBase64Url(parts[3]), ciphertext: fromBase64Url(parts[4]) };
-        } catch {
-          return null;
-        }
-      }
-
-      async function unlockMessage() {
-        $("unlockError").classList.remove("visible");
-        $("decryptedResult").classList.remove("visible");
-        const password = $("unlockPassword").value;
-        if (!password) return showUnlockError("請輸入密碼。");
-        if (!encryptedPayload) return showUnlockError("這個分享連結無效或不完整，請向寄件人索取完整連結。");
-
-        const button = $("unlockBtn");
-        button.disabled = true;
-        button.textContent = "解鎖中…";
-        try {
-          const key = await deriveKey(password, encryptedPayload.salt);
-          const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv: encryptedPayload.iv }, key, encryptedPayload.ciphertext);
-          $("decryptedMessage").textContent = decoder.decode(plaintext);
-          $("decryptedResult").classList.add("visible");
-          $("decryptedResult").scrollIntoView({ behavior: "smooth", block: "nearest" });
-        } catch {
-          showUnlockError("密碼不正確，或者分享資料已損壞。請再試一次。");
-        } finally {
-          button.disabled = false;
-          button.textContent = "解鎖";
-        }
-      }
-
-      function showUnlockError(message) {
-        const box = $("unlockError");
-        box.textContent = message;
-        box.classList.add("visible");
-      }
-
-      async function copyText(text, successMessage) {
-        try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-          } else {
-            const field = document.createElement("textarea");
-            field.value = text;
-            field.style.position = "fixed";
-            field.style.opacity = "0";
-            document.body.appendChild(field);
-            field.select();
-            const copied = document.execCommand("copy");
-            field.remove();
-            if (!copied) throw new Error("Copy unavailable");
-          }
-          showToast(successMessage);
-        } catch (error) {
-          console.error(error);
-          showToast("複製失敗，請手動選取文字複製。");
-        }
-      }
-
-      $("createBtn").addEventListener("click", createShareLink);
-      $("unlockBtn").addEventListener("click", unlockMessage);
-      $("unlockPassword").addEventListener("keydown", (event) => { if (event.key === "Enter") unlockMessage(); });
-      $("createPassword").addEventListener("keydown", (event) => { if (event.key === "Enter") createShareLink(); });
-      $("confirmPassword").addEventListener("keydown", (event) => { if (event.key === "Enter") createShareLink(); });
-      $("copyLinkBtn").addEventListener("click", () => copyText($("shareLink").value, "加密連結已複製！"));
-      $("copyMessageBtn").addEventListener("click", () => copyText($("decryptedMessage").textContent, "訊息已複製！"));
-      $("newMessageBtn").addEventListener("click", () => { window.location.hash = ""; window.location.reload(); });
-
-      encryptedPayload = readPayload();
-      if (window.location.hash && !encryptedPayload) {
-        $("createView").hidden = true;
-        $("unlockView").hidden = false;
-        $("newMessageBtn").hidden = false;
-        showUnlockError("分享連結格式無效，請向寄件人索取完整連結。");
-      } else if (encryptedPayload) {
-        $("createView").hidden = true;
-        $("unlockView").hidden = false;
-        $("newMessageBtn").hidden = false;
-        $("unlockPassword").focus();
-      }
-    </script>
-  </body>
+你願意嗎？</textarea></div>
+      <div class="field"><label for="createPassword">自行設定解鎖密碼</label><input id="createPassword" type="password" autocomplete="new-password" placeholder="設定你想要的密碼"></div>
+      <div class="field"><label for="confirmPassword">再次輸入密碼</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="再輸入一次確認"><p class="hint">密碼不會放進分享連結。請記住密碼，並用另一個渠道告訴對方。</p></div>
+      <button class="primary" id="createBtn" type="button">🔐 加密並建立分享連結</button>
+      <div id="createError" class="result failure" role="alert"></div>
+      <div id="linkResult" class="result success"><h2>✅ 加密連結已建立</h2><p class="hint">複製連結傳給對方，再另外告訴對方密碼。</p><div class="field"><label for="shareLink">分享連結</label><textarea id="shareLink" readonly rows="3"></textarea></div><button class="secondary" id="copyLinkBtn" type="button">📋 複製連結</button></div>
+      <div class="notice">訊息會在你的瀏覽器以 AES-GCM 加密；密碼不會寫入網址或送到伺服器。分享連結內只包含密文。請勿在無法信任的裝置輸入私人內容。</div>
+    </section>
+    <section id="unlockView" hidden><h2>🔒 這是一則加密訊息</h2><p class="subtitle">輸入寄件人另外告訴你的密碼來解鎖。</p><div class="password-box"><input id="unlockPassword" type="password" autocomplete="current-password" placeholder="輸入解鎖密碼" aria-label="輸入解鎖密碼"><button class="primary" id="unlockBtn" type="button">解鎖</button></div><div id="unlockError" class="result failure" role="alert"></div><div id="decryptedResult" class="result success"><h2>💌 給你的心意</h2><p id="decryptedMessage" class="message"></p><div class="actions"><button class="secondary" id="copyMessageBtn" type="button">複製訊息</button></div></div></section>
+  </section><button id="newMessageBtn" class="new-link" type="button" hidden>建立另一則加密訊息</button></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+    const ITERATIONS=310000, encoder=new TextEncoder(), decoder=new TextDecoder(), $=id=>document.getElementById(id);
+    let encryptedPayload=null;
+    function showToast(message){const toast=$("toast");toast.textContent=message;toast.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.remove("show"),2200)}
+    function toBase64Url(bytes){let binary="";for(const byte of bytes)binary+=String.fromCharCode(byte);return btoa(binary).split("+").join("-").split("/").join("_").replace(/=+$/g,"")}
+    function fromBase64Url(value){const base64=value.split("-").join("+").split("_").join("/");const binary=atob(base64+"=".repeat((4-base64.length%4)%4));return Uint8Array.from(binary,char=>char.charCodeAt(0))}
+    async function deriveKey(password,salt){const material=await crypto.subtle.importKey("raw",encoder.encode(password),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:ITERATIONS,hash:"SHA-256"},material,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+    function showCreateError(message){const box=$("createError");box.textContent=message;box.classList.add("visible")}
+    async function createShareLink(){
+      $("createError").classList.remove("visible");$("linkResult").classList.remove("visible");
+      const message=$("messageInput").value,password=$("createPassword").value,confirm=$("confirmPassword").value;
+      if(!message.trim())return showCreateError("請先輸入想分享的內容。");if(!password)return showCreateError("請自行設定一個解鎖密碼。");if(password!==confirm)return showCreateError("兩次輸入的密碼不一致，請再檢查一次。");
+      if(!window.isSecureContext||!window.crypto||!crypto.subtle)return showCreateError("安全加密功能未能啟動。請用 https://rosemary1024.github.io/heart-public/ 開啟網站，並使用最新版本的瀏覽器。");
+      const button=$("createBtn");button.disabled=true;button.textContent="加密中…";
+      try{const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));const key=await deriveKey(password,salt);const ciphertext=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},key,encoder.encode(message)));const payload=["v1",ITERATIONS,toBase64Url(salt),toBase64Url(iv),toBase64Url(ciphertext)].join(".");const url=new URL(window.location.href);url.hash=payload;$("shareLink").value=url.href;$("linkResult").classList.add("visible");$("linkResult").scrollIntoView({behavior:"smooth",block:"nearest"})}
+      catch(error){console.error("Encryption error:",error);showCreateError("加密失敗："+(error&&error.message?error.message:"瀏覽器無法完成加密。請更新瀏覽器或重新載入頁面再試。"))}
+      finally{button.disabled=false;button.textContent="🔐 加密並建立分享連結"}
+    }
+    function readPayload(){const raw=window.location.hash.slice(1);if(!raw)return null;const parts=raw.split(".");if(parts.length!==5||parts[0]!=="v1"||Number(parts[1])!==ITERATIONS)return null;try{return{salt:fromBase64Url(parts[2]),iv:fromBase64Url(parts[3]),ciphertext:fromBase64Url(parts[4])}}catch{return null}}
+    function showUnlockError(message){const box=$("unlockError");box.textContent=message;box.classList.add("visible")}
+    async function unlockMessage(){$("unlockError").classList.remove("visible");$("decryptedResult").classList.remove("visible");const password=$("unlockPassword").value;if(!password)return showUnlockError("請輸入密碼。");if(!encryptedPayload)return showUnlockError("這個分享連結無效或不完整，請向寄件人索取完整連結。");const button=$("unlockBtn");button.disabled=true;button.textContent="解鎖中…";try{const key=await deriveKey(password,encryptedPayload.salt);const plaintext=await crypto.subtle.decrypt({name:"AES-GCM",iv:encryptedPayload.iv},key,encryptedPayload.ciphertext);$("decryptedMessage").textContent=decoder.decode(plaintext);$("decryptedResult").classList.add("visible");$("decryptedResult").scrollIntoView({behavior:"smooth",block:"nearest"})}catch{showUnlockError("密碼不正確，或者分享資料已損壞。請再試一次。")}finally{button.disabled=false;button.textContent="解鎖"}}
+    async function copyText(text,successMessage){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);else{const field=document.createElement("textarea");field.value=text;field.style.position="fixed";field.style.opacity="0";document.body.appendChild(field);field.select();const copied=document.execCommand("copy");field.remove();if(!copied)throw new Error("Copy unavailable")}showToast(successMessage)}catch(error){console.error(error);showToast("複製失敗，請手動選取文字複製。")}}
+    $("createBtn").addEventListener("click",createShareLink);$("unlockBtn").addEventListener("click",unlockMessage);$("unlockPassword").addEventListener("keydown",event=>{if(event.key==="Enter")unlockMessage()});$("createPassword").addEventListener("keydown",event=>{if(event.key==="Enter")createShareLink()});$("confirmPassword").addEventListener("keydown",event=>{if(event.key==="Enter")createShareLink()});$("copyLinkBtn").addEventListener("click",()=>copyText($("shareLink").value,"加密連結已複製！"));$("copyMessageBtn").addEventListener("click",()=>copyText($("decryptedMessage").textContent,"訊息已複製！"));$("newMessageBtn").addEventListener("click",()=>{window.location.hash="";window.location.reload()});
+    encryptedPayload=readPayload();if(window.location.hash&&!encryptedPayload){$("createView").hidden=true;$("unlockView").hidden=false;$("newMessageBtn").hidden=false;showUnlockError("分享連結格式無效，請向寄件人索取完整連結。")}else if(encryptedPayload){$("createView").hidden=true;$("unlockView").hidden=false;$("newMessageBtn").hidden=false;$("unlockPassword").focus()}
+  </script>
+</body>
 </html>

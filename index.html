@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-HK">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>心語密碼</title>
+    <style>
+      :root {
+        --bg1: #fff3f6;
+        --bg2: #ffe7ef;
+        --card: rgba(255,255,255,0.9);
+        --pink: #e86f99;
+        --pink-deep: #d24a7a;
+        --text: #3d2b36;
+        --muted: #7e6873;
+        --line: #f0dfe6;
+        --success: #1b8e68;
+        --danger: #bb4d67;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        background: radial-gradient(circle at top, var(--bg2), var(--bg1) 40%, #fff 100%);
+        color: var(--text);
+      }
+
+      .shell {
+        width: min(92vw, 620px);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        box-shadow: 0 25px 60px rgba(183, 100, 128, 0.12);
+        padding: 28px 24px 22px;
+        backdrop-filter: blur(8px);
+      }
+
+      .eyebrow {
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--pink-deep);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        line-height: 1.1;
+      }
+
+      .subtitle {
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      .password-box {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      input {
+        flex: 1 1 220px;
+        min-width: 0;
+        border-radius: 14px;
+        border: 1px solid #ead5dd;
+        background: white;
+        padding: 15px 16px;
+        font-size: 1rem;
+        color: var(--text);
+        outline: none;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+
+      input:focus {
+        border-color: var(--pink);
+        box-shadow: 0 0 0 4px rgba(232, 111, 153, 0.15);
+      }
+
+      button {
+        border: none;
+        border-radius: 14px;
+        padding: 15px 18px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+      }
+
+      button:hover { opacity: 0.96; }
+      button:active { transform: scale(0.985); }
+
+      .primary {
+        background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+        color: white;
+      }
+
+      .secondary {
+        background: #fff0f4;
+        color: var(--pink-deep);
+      }
+
+      .hint {
+        margin-top: 12px;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+
+      .result {
+        display: none;
+        margin-top: 24px;
+        border-radius: 22px;
+        padding: 20px 18px;
+      }
+
+      .result.visible {
+        display: block;
+      }
+
+      .success {
+        background: #f0fbf6;
+        border: 1px solid #cfe9dd;
+        color: var(--success);
+      }
+
+      .failure {
+        background: #fff1f4;
+        border: 1px solid #f4d5dc;
+        color: var(--danger);
+      }
+
+      .result-title {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        font-weight: 800;
+      }
+
+      .message {
+        margin: 0;
+        line-height: 1.7;
+      }
+
+      .actions {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .mini-tag {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #fff1f5;
+        color: var(--pink-deep);
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 26px;
+        transform: translateX(-50%) translateY(24px);
+        background: rgba(35, 30, 34, 0.92);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="eyebrow">PRIVATE MEMO</div>
+        <h1>心語密碼</h1>
+        <p class="subtitle">輸入密碼後，才能解鎖專屬內容。</p>
+
+        <div class="password-box">
+          <input id="passInput" type="password" placeholder="輸入密碼" aria-label="輸入密碼" />
+          <button class="primary" id="unlockBtn" type="button">解鎖</button>
+        </div>
+
+        <div class="hint">提示：這是專屬調情版本，密碼是 <strong>1024</strong></div>
+
+        <div id="successBox" class="result success">
+          <h2 class="result-title">✅ 已解鎖</h2>
+          <p class="message">
+            你可愛到我想把整個晚上都記在心上。<br><br>
+            今天我想跟你說：<br>
+            我其實很喜歡你這種會讓我心跳加速、嘴角忍不住上揚的人。<br><br>
+            <strong>想約你去吃好吃的、走走逛逛，順便多靠近一點。</strong><br><br>
+            你願意嗎？
+          </p>
+          <div class="actions">
+            <button class="secondary" type="button" id="copyBtn">複製訊息</button>
+          </div>
+        </div>
+
+        <div id="errorBox" class="result failure">
+          <h2 class="result-title">❌ 密碼錯誤</h2>
+          <p class="message">再想想，這份心意不是讓人錯過的。要不要再試一次？</p>
+        </div>
+
+        <div class="mini-tag">for you • only</div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const PASSWORD = "1024";
+      const passInput = document.getElementById("passInput");
+      const unlockBtn = document.getElementById("unlockBtn");
+      const successBox = document.getElementById("successBox");
+      const errorBox = document.getElementById("errorBox");
+      const toast = document.getElementById("toast");
+      const copyBtn = document.getElementById("copyBtn");
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2000);
+      }
+
+      function unlock() {
+        const value = passInput.value.trim();
+        successBox.classList.remove("visible");
+        errorBox.classList.remove("visible");
+
+        if (value === PASSWORD) {
+          successBox.classList.add("visible");
+          successBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        } else {
+          errorBox.classList.add("visible");
+          errorBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+
+      function copyMessage() {
+        const text = `你可愛到我想把整個晚上都記在心上。\n\n我其實很喜歡你這種會讓我心跳加速、嘴角忍不住上揚的人。\n\n想約你去吃好吃的、走走逛逛，順便多靠近一點。\n\n你願意嗎？`;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast("訊息已複製");
+          }).catch(() => {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        showToast("訊息已複製");
+      }
+
+      unlockBtn.addEventListener("click", unlock);
+      passInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") unlock();
+      });
+      copyBtn.addEventListener("click", copyMessage);
+    </script>
+  </body>
+</html>
